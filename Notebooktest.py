@@ -25,5 +25,8 @@ display(df)
 spark.conf.set("spark.sql.legacy.allowCreatingManagedTableUsingNonemptyLocation","true")
 
 # Save the CSV in table format
-df.write.format("parquet").saveAsTable("Allergies")
+# df.write.format("parquet").saveAsTable("Allergies")
 # df.write.format("parque").mode("Overwrite").saveAsTable("Allergies")
+
+df.write.mode("overwrite").format("parquet").saveAsTable("Allergies")
+spark.catalog.refreshTable("Allergies")
