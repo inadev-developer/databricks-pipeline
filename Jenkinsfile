@@ -3,7 +3,7 @@ def DBURL           = "https://dbc-3f01e141-ef44.cloud.databricks.com"
 def GITREPOREMOTE   = "https://github.com/suprobhat/databricks-notebook"
 def GITHUBCREDID    = "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"
 def CURRENTRELEASE  = "main"
-def NOTEBOOKPATH    = "/Users/satya.saini@inadev.com/example"
+def NOTEBOOKPATH    = "/Users/joy.chattopadhyay@inadev.com/example"
 def NOTEBOOKNAME    = "Notebooktest"
 def BUILDPATH       = "https://dbc-6a384387-6e96.cloud.databricks.com/#job/1090278327353974"
 def WORKSPACEPATH   = "https://dbc-3f01e141-ef44.cloud.databricks.com"
@@ -65,7 +65,7 @@ spec:
           steps {
             container('python') {
               script {
-                def data = "{\"name\": \"Testrun\", \"existing_cluster_id\": \"$CLUSTERID\", \"timeout_seconds\": 3600, \"max_retries\": 1, \"notebook_task\": {\"notebook_path\": \"$NOTEBOOKPATH\", \"base_parameters\": {} } }"
+                def data = "{\"name\": \"Testrun\", \"existing_cluster_id\": \"${env.DATABRICKS_CLUSTER_ID}\", \"timeout_seconds\": 3600, \"max_retries\": 1, \"notebook_task\": {\"notebook_path\": \"${env.DATABRICKS_NOTEBOOK_PATH}\", \"base_parameters\": {} } }"
                 writeFile(file: 'job.json', text: data)
                 sh """
                   cat job.json
@@ -96,12 +96,12 @@ spec:
                               pip3 install pytest
                               
                               # Configure Databricks CLI for deployment
-                              echo "${DBURL}
+                              echo "${env.DATABRICKS_WORKSPACE_URL}
                               $TOKEN" | databricks configure --token
                               # Configure Databricks Connect for testing
-                              echo "${DBURL}
+                              echo "${env.DATABRICKS_WORKSPACE_URL}
                               $TOKEN
-                              $CLUSTERID
+                              ${env.DATABRICKS_CLUSTER_ID}
                               0
                               15001" | databricks-connect configure
                               databricks jobs configure --version=2.1
@@ -111,7 +111,7 @@ spec:
                               databricks fs ls dbfs:/mnt/
                               databricks clusters list
                               #databricks workspace mkdirs "/src"
-                              databricks workspace import --language PYTHON --overwrite Notebooktest.py $NOTEBOOKPATH
+                              databricks workspace import --language PYTHON --overwrite Notebooktest.py ${env.DATABRICKS_NOTEBOOK_PATH}
                               #databricks fs cp dbfs:/mnt/ dbfs:/tmp/demo/ --recursive --overwrite
                               #databricks fs ls dbfs:/tmp/demo/experiments
                               JOB_ID=\$(databricks jobs create --json-file job.json | jq -r '.job_id' )
