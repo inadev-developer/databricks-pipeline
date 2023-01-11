@@ -40,6 +40,7 @@ spec:
     }
     stages {
         stage ('CSV upload') {
+          container('aws-cli') {
             steps {
                 script {
                     sh """
@@ -47,6 +48,7 @@ spec:
                     """
                 }                          
             }
+          }  
         }           
         stage ('Notebook create') {
             steps {
