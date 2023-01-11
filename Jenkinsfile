@@ -65,7 +65,7 @@ spec:
           steps {
             container('python') {
               script {
-                def data = "{\"name\": \"Testrun\", \"existing_cluster_id\": \"${env.DATABRICKS_CLUSTER_ID}\", \"timeout_seconds\": 3600, \"max_retries\": 1, \"notebook_task\": {\"notebook_path\": \"${env.DATABRICKS_NOTEBOOK_PATH}\", \"base_parameters\": {} } }"
+                def data = "{\"name\": \"Testrun\", \"existing_cluster_id\": \"${env.DATABRICKS_CLUSTER_ID}\", \"timeout_seconds\": 3600, \"max_retries\": 1, \"notebook_task\": {\"notebook_path\": \"${env.DATABRICKS_NOTEBOOK_PATH}/$NOTEBOOKNAME\", \"base_parameters\": {} } }"
                 writeFile(file: 'job.json', text: data)
                 sh """
                   cat job.json
@@ -111,7 +111,7 @@ spec:
                               databricks fs ls dbfs:/mnt/
                               databricks clusters list
                               #databricks workspace mkdirs "/src"
-                              databricks workspace import --language PYTHON --overwrite Notebooktest.py ${env.DATABRICKS_NOTEBOOK_PATH}
+                              databricks workspace import --language PYTHON --overwrite Notebooktest.py ${env.DATABRICKS_NOTEBOOK_PATH}/$NOTEBOOKNAME
                               #databricks fs cp dbfs:/mnt/ dbfs:/tmp/demo/ --recursive --overwrite
                               #databricks fs ls dbfs:/tmp/demo/experiments
                               JOB_ID=\$(databricks jobs create --json-file job.json | jq -r '.job_id' )
