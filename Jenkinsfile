@@ -41,7 +41,7 @@ spec:
     stages {
         stage ('CSV upload') {
           steps {
-            container('python') {
+            container('aws-cli') {
               script {
                 sh """
                   aws s3 cp allergies.csv s3://${BUCKET}/
