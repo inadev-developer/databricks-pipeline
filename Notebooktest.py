@@ -2,12 +2,14 @@
 from pyspark.sql.functions import *
 # URL processing
 import urllib
+
+mountPath = "update_mount_path"
 # Check if the AWS S3 bucket was mounted successfully
-display(dbutils.fs.ls("/mnt/experiments"))
+display(dbutils.fs.ls(mountPath))
 
 
 # File location and type
-file_location = "/mnt/experiments/allergies.csv"
+file_location = mountPath + "/allergies.csv"
 file_type = "csv"
 # CSV options
 infer_schema = "true"
