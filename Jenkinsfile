@@ -1,5 +1,4 @@
 def NOTEBOOKNAME    = "Notebooktest"
-def BUCKET          = "esis-lite-test-one-mzvyon-mountbucket"
 
 pipeline {
     agent {
@@ -44,7 +43,7 @@ spec:
             container('aws-cli') {
               script {
                 sh """
-                  aws s3 cp allergies.csv s3://${BUCKET}/
+                  aws s3 cp allergies.csv s3://${env.DATABRICKS_MOUNT_BUCKET}/
                 """
               }                          
             }
