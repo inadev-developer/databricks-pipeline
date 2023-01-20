@@ -49,11 +49,11 @@ spec:
             }
           }  
         }           
-        stage ('Notebook create') {
+        stage ('Update Mount path in code') {
             steps {
                 script {
                     sh """
-                        ls -la
+                        sed 's/update_mount_path/${${env.DATABRICKS_MOUNT_PATH}}/g' Notebooktest.py
                     """
                 }                          
             }
