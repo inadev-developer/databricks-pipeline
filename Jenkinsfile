@@ -53,7 +53,7 @@ spec:
             steps {
                 script {
                     sh """
-                        sed 's/update_mount_path/${${env.DATABRICKS_MOUNT_PATH}}/g' Notebooktest.py
+                        sed 's/update_mount_path/${env.DATABRICKS_MOUNT_PATH}/g' Notebooktest.py
                     """
                 }                          
             }
