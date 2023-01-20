@@ -1,4 +1,5 @@
 def NOTEBOOKNAME    = "Notebooktest"
+def FILENAME = "Notebooktest.py"
 
 pipeline {
     agent {
@@ -53,7 +54,7 @@ spec:
             steps {
                 script {
                     sh """
-                        sed -i 's#update_mount_path#${env.DATABRICKS_MOUNT_PATH}#g' Notebooktest.py
+                        sed -i 's#update_mount_path#${env.DATABRICKS_MOUNT_PATH}#g' ${FILENAME}
                     """
                 }                          
             }
@@ -109,7 +110,7 @@ spec:
                               databricks fs ls dbfs:/mnt/
                               databricks clusters list
                               #databricks workspace mkdirs "/src"
-                              databricks workspace import --language PYTHON --overwrite Notebooktest.py ${env.DATABRICKS_NOTEBOOK_PATH}/$NOTEBOOKNAME
+                              databricks workspace import --language PYTHON --overwrite ${FILENAME} ${env.DATABRICKS_NOTEBOOK_PATH}/$NOTEBOOKNAME
                               #databricks fs cp dbfs:/mnt/ dbfs:/tmp/demo/ --recursive --overwrite
                               #databricks fs ls dbfs:/tmp/demo/experiments
                               JOB_ID=\$(databricks jobs create --json-file job.json | jq -r '.job_id' )
