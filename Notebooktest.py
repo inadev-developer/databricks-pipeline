@@ -34,29 +34,28 @@ df.write.mode("overwrite").format("parquet").saveAsTable("Allergies")
 spark.catalog.refreshTable("Allergies")
 
 # Connect to the database
-		USERNAME =  "postgres"
-		PASSWORD=  "L3d38L6NlTXFuFnA"
-		HOST =  "esis-lite-testing-one-postgres.c69qhpco3e5q.us-east-1.rds.amazonaws.com"
-		DATABASE_NAME= 'databricks'
+USERNAME =  "postgres"
+PASSWORD=  "L3d38L6NlTXFuFnA"
+HOST =  "esis-lite-testing-one-postgres.c69qhpco3e5q.us-east-1.rds.amazonaws.com"
+DATABASE_NAME= 'databricks'
 #Postgres Jdbc URL
-		jdbcURL = "jdbc:postgresql://{}/{}".format(HOST,DATABASE_NAME)
+jdbcURL = "jdbc:postgresql://{}/{}".format(HOST,DATABASE_NAME)
 #Create connection properties with USERNAME & PASSWORD
-		connProperties = {
-				'user' :USERNAME,
-				'password' : PASSWORD
-			}
+connProperties = {
+	'user' :USERNAME,
+	'password' : PASSWORD
+	'driver': "org.postgresql.Driver"
+}
 #LOAD Postgraql Driver
-	%scala
-		Class.forName("org.postgresql.Driver")
+# %scala
+# 	Class.forName("org.postgresql.Driver")
 #Reading Table from AWS POstgreSQL
-
-		get_df =Spark.read.jdbc(url=jdbcURL ,table= ‘table name’ , properties = connProperties)
-
-		Display(get_df)
+get_df =Spark.read.jdbc(url=jdbcURL ,table= ‘table name’ , properties = connProperties)
+Display(get_df)
 #Write DATA Into the Postgres from DATAbricks
 
 # Now get the allergies dataset first. 
-		allergies_df = spark.read.format('csv').option('header','true').option('inferschema','true')\
+allergies_df = spark.read.format('csv').option('header','true').option('inferschema','true')\
 		.load('/mnt/sample-databricks-demo1/allergies.csv')
 		display(allergies_df)
 
